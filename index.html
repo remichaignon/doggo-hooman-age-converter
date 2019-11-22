@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Doggo Hooman Age Converter</title>
+    <style type="text/css">
+      body { margin:1em auto; max-width:40em; padding:0 .62em; font:1.2em/1.62em sans-serif; }
+      h1,h2,h3 { line-height:1.2em; }
+      input { width: 35px; text-align: right; font-size: 18px; }
+      header { margin-bottom: 40px; }
+      pre { text-align: center; }
+      #hooman-age { font-weight: bold; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Doggo Hooman Age Converter</h1>
+      <p>Real Doggo Age: <input id="doggo-years" type="number" value="0" min="0" max="25"/><label for="doggo-years"> years</label> and <input id="doggo-months" type="number" value="0" min="0" max="11"/><label for="doggo-months"> months</label></p>
+      <p>Doggo Age in Hooman Years is <span id="hooman-age">...</span></p>
+    </header>
+    <article>
+      <h3>What ?</h3>
+      <p>Lately I've seen a couple of articles <sup>[1, 2]</sup> mentioning a new research paper <sup>[3]</sup> that provides a new formula to convert a dog's age into its equivalent in human years. This tool allows you to easily convert your pupper's age into human years using the formula described in the paper:
+        <pre>humanAge = 16×ln(dogAge) + 31</pre>
+      </p>
+    </article>
+    <footer>
+      <h3>Sources:</h3>
+      <ol>
+          <li><a href="https://www.thecut.com/2019/11/how-old-is-my-dog-in-human-years.html" target="_blank">"There’s a New Way to Calculate Your Dog’s Age in Human Years" from The Cut</a></li>
+          <li><a href="https://www.sciencealert.com/what-s-the-real-human-equivalent-of-your-dog-s-age-here-s-a-new-formula-to-figure-it-out" target="_blank">"What's The Real Human Equivalent of Your Dog's Age? Here's a New Formula" from Science Alert</a></li>
+          <li><a href="https://www.biorxiv.org/content/10.1101/829192v1?ct=" target="_blank">"Quantitative translation of dog-to-human aging by conserved remodeling of epigenetic networks" by Tina Wang, Jianzhu Ma, Andrew N. Hogan, Samson Fong, Katherine Licon, Brian Tsui, Jason F. Kreisberg, Peter D. Adams, Anne-Ruxandra Carvunis, Danika L. Bannasch, Elaine A. Ostrander, Trey Ideker</a></li>
+        </ul>
+      </footer>
+
+    <script type="text/javascript">
+
+      (function () {
+
+        function convertDoggoAgeToHoomanAge (doggoAge) {
+          return (16 * Math.log(doggoAge)) + 31;
+        };
+
+        function convertYearsAndMonthsToYears (years, months) {
+          return years + (months / 12);
+        };
+        function convertYearsToYearsAndMonths (years) {
+          var fullYears = Math.floor(years);
+          return { years: fullYears, months: Math.round((years - fullYears) * 12) };
+        };
+
+        function getDoggoAge () {
+          return {
+            years: parseInt(document.getElementById("doggo-years").value, 10),
+            months: parseInt(document.getElementById("doggo-months").value, 10)
+          };
+        };
+        function setHoomanAge (years, months) {
+          document.getElementById("hooman-age").innerText = "" + years + " years and " + months + " months";
+        };
+
+        function onInputChange () {
+          var doggoAge = getDoggoAge();
+          var doggoAgeInYears = convertYearsAndMonthsToYears(doggoAge.years, doggoAge.months);
+          var hoomanAgeInYears = convertDoggoAgeToHoomanAge(doggoAgeInYears);
+          var hoomanAge = convertYearsToYearsAndMonths(hoomanAgeInYears);
+          setHoomanAge(hoomanAge.years, hoomanAge.months);
+        };
+
+        document.getElementById("doggo-years").onchange = onInputChange;
+        document.getElementById("doggo-months").onchange = onInputChange;
+
+      })();
+
+    </script>
+  </body>
+</html>
